@@ -1,23 +1,29 @@
+package sean.yu;
+
 import java.awt.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import static sean.yu.Tetris.SIDE_LEN;
+
 /**
+ * 生成下落方块的工厂
  * @author Sean Yu
  */
-public class TetrisListFactory {
+public class TetrisFactory {
 
-    public static final int SIDE_LEN = 50;
     private static final Random RANDOM = new Random();
 
-    enum Shape {
-        I, O, Z, S, T, L, J;
-    }
-
+    /**
+     * 生成一个形状随机的方块
+     * 其中随机的逻辑：从7个形状种随机选取一个
+     *
+     * @return
+     */
     public static List<Rectangle> generateRandomTetris(){
-        Shape shape = Shape.values()[RANDOM.nextInt(Shape.values().length)];
+        Tetris.Shape shape = Tetris.Shape.values()[RANDOM.nextInt(Tetris.Shape.values().length)];
 
         switch (shape) {
             case I:

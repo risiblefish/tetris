@@ -1,3 +1,5 @@
+package sean.yu;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -12,17 +14,14 @@ import java.util.List;
  * @author: Unuts
  * @create: 2020-08-03 19:18
  **/
-public class GFrame extends Frame{
+public class GameFrame extends Frame {
 
-    static final int GAME_WIDTH = 800, GAME_HEIGHT = 600; //800*600
+    static final int GAME_WIDTH = 800;
+    static final int GAME_HEIGHT = 600;
     private Tetris tetris = new Tetris(this);
     public final List<Rectangle> bottomRectList = new ArrayList();
 
-    public GFrame() {
-//        bullets = new LinkedList();
-//        tanks = new LinkedList();
-//        explodesList = new LinkedList();
-//        myTank = new Tank(200, 400, Direction.DOWN, this, GOOD);
+    public GameFrame() {
         setSize(GAME_WIDTH, GAME_HEIGHT);
         setResizable(false);
         addKeyListener(new TankKeyListener());
@@ -35,7 +34,6 @@ public class GFrame extends Frame{
             }
         });
     }
-
 
     //getter and setter
     public void setTetris(Tetris tetris) {
@@ -86,38 +84,6 @@ public class GFrame extends Frame{
             g.fillRect(x, y, w, h);
             g.setColor(og);
         }
-
-        //tetrisObject.paint(g);
-//        //绘制游戏信息
-//        Color c = g.getColor();
-//        g.setColor(Color.white);
-//        g.drawString(String.format("当前得分: %s ", bullets.size()), 10, 60);
-
-//        g.setColor(c);
-//        //绘制主战坦克
-//        myTank.paint(g);
-//
-//        //绘制子弹
-//        for (int i = 0; i < bullets.size(); i++) {
-//            bullets.get(i).paint(g);
-//        }
-//
-//        //绘制敌人
-//        for (int i = 0; i < tanks.size(); i++) {
-//            tanks.get(i).paint(g);
-//        }
-//
-//        //每次绘制时对每颗子弹和坦克进行碰撞检测
-//        for (int i = 0; i < bullets.size(); i++) {
-//            for (int j = 0; j < tanks.size(); j++) {
-//                bullets.get(i).collideWith(tanks.get(j));
-//            }
-//        }
-//
-//        //绘制爆炸
-//        for (int i = 0; i < explodesList.size(); i++) {
-//            explodesList.get(i).paint(g);
-//        }
     }
 
     /**
@@ -148,7 +114,6 @@ public class GFrame extends Frame{
                 default:
                     break;
             }
-//            setMainTankDirection();
         }
 
         @Override
@@ -174,27 +139,6 @@ public class GFrame extends Frame{
                 default:
                     break;
             }
-//            setMainTankDirection();
         }
-
-//        private void setMainTankDirection() {
-//            if (!bL && !bR && !bU && !bD) {
-//                myTank.setMoving(false);
-//            } else {
-//                myTank.setMoving(true);
-//                if (bL) {
-//                    myTank.setDir(LEFT);
-//                }
-//                if (bR) {
-//                    myTank.setDir(RIGHT);
-//                }
-//                if (bU) {
-//                    myTank.setDir(UP);
-//                }
-//                if (bD) {
-//                    myTank.setDir(DOWN);
-//                }
-//            }
-//        }
     }
 }
