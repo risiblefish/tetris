@@ -16,10 +16,18 @@ import java.util.List;
  **/
 public class GameFrame extends Frame {
 
-    static final int GAME_WIDTH = 800;
-    static final int GAME_HEIGHT = 600;
+    //游戏界面大小
+    static final int GAME_WIDTH = 200;
+    static final int GAME_HEIGHT = 400;
+
+    //当前下落的方块
     private Tetris tetris = new Tetris(this);
+
+    //底部静止的方块
     public final List<Rectangle> bottomRectList = new ArrayList();
+
+    //当前得分
+    public int score = 0;
 
     //是否按下了方向键
     boolean bL = false;
@@ -46,6 +54,7 @@ public class GameFrame extends Frame {
     }
 
     Image offScreenImage = null;
+
     /**
      * 设置双缓冲防止屏幕刷新导致的闪烁
      * <p>
@@ -55,7 +64,7 @@ public class GameFrame extends Frame {
      * 最后用drawImage将缓存中的图一次性画出
      * 即Paint是边画边填充，update是一次性画到缓存里，然后再从缓存中一次性画出来
      *
-     * @param g //
+     * @param g
      */
     @Override
     public void update(Graphics g) {
@@ -74,6 +83,9 @@ public class GameFrame extends Frame {
     //绘制游戏实时画面
     @Override
     public void paint(Graphics g) {
+        //绘制得分
+        //todo
+
         //绘制当前下落方块
         tetris.paint(g);
 

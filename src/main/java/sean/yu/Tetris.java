@@ -1,7 +1,9 @@
 package sean.yu;
 
 import java.awt.*;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import static sean.yu.GameFrame.GAME_HEIGHT;
 import static sean.yu.GameFrame.GAME_WIDTH;
@@ -19,6 +21,8 @@ public class Tetris {
     //每个子方块的边长
     public static final int SIDE_LEN = 50;
 
+    private static final LinkedList<Rectangle> RECT_TO_DELETE_LIST = new LinkedList<>();
+
     /**
      * 定义7种方块形状的枚举
      */
@@ -26,8 +30,9 @@ public class Tetris {
         I, O, Z, S, T, L, J;
     }
 
-    //初始中心坐标
+    //初始颜色
     private Color color;
+
     //方块下落速度
     private static final int SPEED = 10;
 
@@ -73,6 +78,7 @@ public class Tetris {
         //如果本次下落距离为0，则当前方块变成底部方块，然后重新生成一个从顶部下落的方块
         if (dis == 0) {
             frame.bottomRectList.addAll(this.rList);
+            updateBottomRects();
             frame.setTetris(new Tetris(frame));
         }
         //否则，进行长度为dis的下落
@@ -81,11 +87,55 @@ public class Tetris {
         }
     }
 
-    //对每个小方块进行一次下落
+    /**
+     * 更新底部方块：判断最底部的方块是否连成了一排，如果是，则消除这排，然后将剩余的方块下落一格
+     */
+    private void updateBottomRects() {
+        boolean isRemovable = true;
+        int index = 0;
+        while (index < GAME_WIDTH - SIDE_LEN) {
+            int currIndex = index;
+//            isRemovable = this.frame.bottomRectList.stream().anyMatch(r -> r.x == currIndex && r.y == GAME_HEIGHT - SIDE_LEN);
+            Optional<Rectangle> currToDelete = this.frame.bottomRectList.stream().filter(r -> r.x == currIndex && r.y == GAME_HEIGHT - SIDE_LEN).findAny();
+            if (currToDelete.isPresent()) {
+                RECT_TO_DELETE_LIST.add(currToDelete.get());
+                index += SIDE_LEN;
+            } else {
+                isRemovable = false;
+                break;
+            }
+        }
+
+        //如果最底层连成了一排
+        if (isRemovable) {
+            //把所有在最底层的子方块去掉(分别从2个集合中删掉)
+            while (!RECT_TO_DELETE_LIST.isEmpty()) {
+                Rectangle r = RECT_TO_DELETE_LIST.pop();
+                this.frame.bottomRectList.remove(r);
+            }
+            //其他方块下落边长高度
+            for (int i = 0; i < this.frame.bottomRectList.size(); i++) {
+                this.frame.bottomRectList.get(i).y += SIDE_LEN;
+            }
+
+            //记算一次得分
+            this.frame.score += 10;
+
+            //继续进行消除
+            updateBottomRects();
+        }
+        //否则，清空删除链表
+        else {
+            RECT_TO_DELETE_LIST.clear();
+        }
+    }
+
+    /**
+     * 对每个小方块进行一次下落
+     */
     private void fall(Rectangle r, int dis) {
         r.y += dis;
     }
-
 
     /**
      * 如果按了左右方向键，则进行额外的左右移动
@@ -113,7 +163,6 @@ public class Tetris {
         int dis = distanceToRightBound(t);
         t.rList.forEach(r -> r.x += dis);
     }
-
 
     private int distanceToLeftBound(Tetris t) {
         int minDis = SPEED;
