@@ -21,6 +21,11 @@ public class GameFrame extends Frame {
     private Tetris tetris = new Tetris(this);
     public final List<Rectangle> bottomRectList = new ArrayList();
 
+    //是否按下了方向键
+    boolean bL = false;
+    boolean bR = false;
+    boolean bD = false;
+
     public GameFrame() {
         setSize(GAME_WIDTH, GAME_HEIGHT);
         setResizable(false);
@@ -90,10 +95,6 @@ public class GameFrame extends Frame {
      * 处理对键盘的监听
      */
     class TankKeyListener extends KeyAdapter {
-        boolean bL = false;
-        boolean bR = false;
-        boolean bU = false;
-        boolean bD = false;
 
         @Override
         public void keyPressed(KeyEvent e) {
@@ -101,14 +102,14 @@ public class GameFrame extends Frame {
             switch (key) {
                 case KeyEvent.VK_LEFT:
                     bL = true;
+                    repaint();
                     break;
                 case KeyEvent.VK_RIGHT:
+                    repaint();
                     bR = true;
                     break;
-                case KeyEvent.VK_UP:
-                    bU = true;
-                    break;
                 case KeyEvent.VK_DOWN:
+                    repaint();
                     bD = true;
                     break;
                 default:
@@ -121,19 +122,12 @@ public class GameFrame extends Frame {
             int key = e.getKeyCode();
             switch (key) {
                 case KeyEvent.VK_LEFT:
-                    System.out.println("释放了left");
                     bL = false;
                     break;
                 case KeyEvent.VK_RIGHT:
-                    System.out.println("释放了right");
                     bR = false;
                     break;
-                case KeyEvent.VK_UP:
-                    System.out.println("释放了up");
-                    bU = false;
-                    break;
                 case KeyEvent.VK_DOWN:
-                    System.out.println("释放了down");
                     bD = false;
                     break;
                 default:
